@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "scan_root": "/home/user/workspace/skus/marketplace/github/actions/action-pqc-posture-scan/tests/fixtures",
+  "findings": [
+    {
+      "rule_id": "PQC001",
+      "severity": "high",
+      "message": "RSA key generation or usage",
+      "path": "fixture.py",
+      "line": 1,
+      "match": "rsa"
+    },
+    {
+      "rule_id": "PQC001",
+      "severity": "high",
+      "message": "RSA key generation or usage",
+      "path": "fixture.py",
+      "line": 2,
+      "match": "rsa.generate_private_key"
+    },
+    {
+      "rule_id": "PQC005",
+      "severity": "low",
+      "message": "Cryptographic dependency",
+      "path": "fixture.py",
+      "line": 1,
+      "match": "cryptography"
+    }
+  ],
+  "summary": {
+    "findings_count": 3,
+    "highest_severity": "high"
+  }
+}

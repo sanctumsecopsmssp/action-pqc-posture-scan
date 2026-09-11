@@ -1,0 +1,3 @@
+findings-count=3
+highest-severity=high
+report-path=/home/user/workspace/skus/marketplace/github/actions/action-pqc-posture-scan/tests/fixtures/report.json

@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "PQC Posture Scan",
+          "rules": [
+            {
+              "id": "PQC001",
+              "shortDescription": {
+                "text": "RSA key generation or usage"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              }
+            },
+            {
+              "id": "PQC002",
+              "shortDescription": {
+                "text": "Classical elliptic-curve cryptography"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              }
+            },
+            {
+              "id": "PQC003",
+              "shortDescription": {
+                "text": "Pre-quantum TLS cipher suite"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              }
+            },
+            {
+              "id": "PQC004",
+              "shortDescription": {
+                "text": "Cryptographic key or certificate file"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              }
+            },
+            {
+              "id": "PQC005",
+              "shortDescription": {
+                "text": "Cryptographic dependency"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "PQC001",
+          "level": "error",
+          "message": {
+            "text": "RSA key generation or usage"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "fixture.py"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "PQC001",
+          "level": "error",
+          "message": {
+            "text": "RSA key generation or usage"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "fixture.py"
+                },
+                "region": {
+                  "startLine": 2
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "PQC005",
+          "level": "warning",
+          "message": {
+            "text": "Cryptographic dependency"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "fixture.py"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

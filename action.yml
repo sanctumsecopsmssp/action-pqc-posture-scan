@@ -1,0 +1,44 @@
+name: PQC Posture Scan
+author: Sanctum SecOps LLC
+description: Scans a repository for quantum-vulnerable cryptographic usage and reports what a CNSA 2.0 or NIST PQC migration would have to replace. Detects RSA and classical elliptic-curve key generation, hardcoded curve and modulus parameters, certificate and key files, TLS configuration pinned to pre-quantum cipher suites, and dependency manifests that pull in cryptographic libraries. Emits a posture report as a job summary, a machine-readable JSON artifact, and optional SARIF for code scanning.
+branding:
+  icon: shield
+  color: purple
+inputs:
+  path:
+    description: Root directory to scan, relative to the workspace.
+    required: false
+    default: .
+  fail-on:
+    description: Severity that fails the job. One of none, low, medium, high, critical.
+    required: false
+    default: high
+  report-format:
+    description: Output format for the report artifact. One of json, sarif, both.
+    required: false
+    default: json
+  report-path:
+    description: File path for the written report artifact.
+    required: false
+    default: pqc-posture-report.json
+  exclude:
+    description: Newline-separated glob patterns to exclude from the scan, in addition to .git and common vendor directories.
+    required: false
+    default: ''
+outputs:
+  findings-count:
+    description: Total number of quantum-vulnerable findings.
+    value: ${{ steps.run-action.outputs.findings-count }}
+  highest-severity:
+    description: Highest severity observed, or none when the scan is clean.
+    value: ${{ steps.run-action.outputs.highest-severity }}
+  report-path:
+    description: Path to the written report artifact.
+    value: ${{ steps.run-action.outputs.report-path }}
+runs:
+  using: composite
+  steps:
+  - id: run-action
+    name: PQC Posture Scan
+    shell: bash
+    run: python3.11 "${{ github.action_path }}/scripts/pqc_posture_scan.py" --path "${{ inputs.path }}" --fail-on "${{ inputs.fail-on }}" --report-format "${{ inputs.report-format }}" --report-path "${{ inputs.report-path }}" --exclude "${{ inputs.exclude }}"
