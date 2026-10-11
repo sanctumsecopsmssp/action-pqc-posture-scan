@@ -13,6 +13,7 @@ Scans a repository for quantum-vulnerable cryptographic usage and reports what a
 | report-format | Output format for the report artifact. One of json, sarif, both. | No | `json` |
 | report-path | File path for the written report artifact. | No | `pqc-posture-report.json` |
 | exclude | Newline-separated glob patterns to exclude from the scan, in addition to .git and common vendor directories. | No | `` |
+| show-cta | Append a one-line Sanctum SecOps help link to the job summary. | No | `true` |
 
 ## Outputs
 
@@ -90,3 +91,11 @@ Apache-2.0. See [LICENSE](LICENSE).
 ---
 
 Sanctum SecOps LLC · [Website](https://sanctumsecops.com) · [Support](https://sanctumsecops.com/support) · [Contact](mailto:Brian@sso-labs.com)
+
+## Job summary footer
+
+By default the job summary ends with one help link to Sanctum SecOps. Set `show-cta: 'false'` to hide it. The action sends no telemetry and makes no network calls beyond what its inputs request.
+
+## Support
+
+Built and maintained by [Sanctum SecOps LLC](https://sanctumsecops.com/contact?utm_source=github&utm_medium=readme&utm_campaign=action-pqc-posture-scan&utm_content=post-quantum-readiness): managed cybersecurity, enterprise PKI, post-quantum migration, and CMMC readiness support for defense contractors and regulated teams. Sanctum SecOps is not a C3PAO and does not issue CMMC certifications.

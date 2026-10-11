@@ -25,6 +25,10 @@ inputs:
     description: Newline-separated glob patterns to exclude from the scan, in addition to .git and common vendor directories.
     required: false
     default: ''
+  show-cta:
+    description: Append a one-line Sanctum SecOps help link to the job summary. Set to 'false' to hide it.
+    required: false
+    default: 'true'
 outputs:
   findings-count:
     description: Total number of quantum-vulnerable findings.
@@ -38,7 +42,25 @@ outputs:
 runs:
   using: composite
   steps:
+  - id: py
+    name: Set up Python 3.11 (isolated from the caller's PATH)
+    uses: actions/setup-python@v5
+    with:
+      python-version: '3.11'
+      update-environment: false
   - id: run-action
     name: PQC Posture Scan
     shell: bash
-    run: python3.11 "${{ github.action_path }}/scripts/pqc_posture_scan.py" --path "${{ inputs.path }}" --fail-on "${{ inputs.fail-on }}" --report-format "${{ inputs.report-format }}" --report-path "${{ inputs.report-path }}" --exclude "${{ inputs.exclude }}"
+    run: exec "$PY" "${{ github.action_path }}/scripts/pqc_posture_scan.py" --path "${{ inputs.path }}" --fail-on "${{ inputs.fail-on }}" --report-format "${{ inputs.report-format }}" --report-path "${{ inputs.report-path }}" --exclude "${{ inputs.exclude }}"
+    env:
+      PY: ${{ steps.py.outputs.python-path }}
+  - name: Summary footer
+    if: always() && inputs.show-cta == 'true'
+    shell: bash
+    env:
+      CTA_URL: https://sanctumsecops.com/contact?utm_source=github&utm_medium=marketplace-action&utm_campaign=action-pqc-posture-scan&utm_content=post-quantum-readiness
+      CTA_TEXT: Planning a CNSA 2.0 / NIST PQC migration? Sanctum SecOps turns this report into a prioritized migration plan.
+    run: |
+      if [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then
+        printf '\n---\n%s [Talk to Sanctum SecOps](%s)\n' "$CTA_TEXT" "$CTA_URL" >> "$GITHUB_STEP_SUMMARY"
+      fi
